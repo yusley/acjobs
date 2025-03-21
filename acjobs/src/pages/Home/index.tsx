@@ -1,8 +1,13 @@
 import './styles.css'
+import Header from '../../components/Header';
+import ListJobs from '../../components/ListJobs';
 
 function Home(){
     return(
-        <h1>Home</h1>
+        <div>
+            <Header/>
+            <ListJobs/>
+        </div>
     )
 }
 
