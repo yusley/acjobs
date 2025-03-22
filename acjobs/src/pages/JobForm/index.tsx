@@ -2,7 +2,7 @@ import './styles.css'
 import {motion} from 'framer-motion'
 import { FormEvent, useReducer } from 'react';
 
-interface Vaga {
+interface VagaInterface {
     role: string;
     company: string;
     location: string;
@@ -11,7 +11,7 @@ interface Vaga {
     salary: number;
 }
 
-const inititalVagaValue: Vaga = {
+const inititalVagaValue: VagaInterface = {
     role: '',
     company: '',
     location: '',
@@ -29,7 +29,7 @@ type Action =
 | {type:"SET_SALARY",payload: number}
 | {type:"ADD_JOB"}
 
-const reduce = (state:Vaga, action: Action) => {
+const reduce = (state:VagaInterface, action: Action) => {
     switch (action.type){
         case 'SET_ROLE':
             return {...state, role: action.payload}

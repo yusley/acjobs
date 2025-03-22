@@ -4,17 +4,28 @@ import Login from "../pages/Login";
 import JobForm from "../pages/JobForm";
 import Header from "../components/Header";
 import { AnimatePresence } from "framer-motion";
+import {useCookies} from 'react-cookie'
 
 function Routers(){
+
+    const [cookie] = useCookies();
+
     return(
         <AnimatePresence>
-            <Header/>
+            {cookie.token && <Header/>}
             <Routes>
-                
-                <Route path="/" element={<Home/>}/>
-                <Route path="/vaga" element={<JobForm/>}/>
-                <Route path="/login" element={<Login/>}/>
-                
+                {cookie.token ? (
+                    <>  
+                        <Route path="/" element={<Home/>}/>
+                        <Route path="/vaga" element={<JobForm/>}/>
+                        <Route path="*" element={<Navigate to="/" />} />
+                    </> ):(
+                    <>
+                    
+                        <Route path="/login" element={<Login/>}/>
+                        <Route path="*" element={<Navigate to="/login" />} />
+                    </>
+                )}
                 
             </Routes>
         </AnimatePresence>

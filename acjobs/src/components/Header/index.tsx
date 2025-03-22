@@ -3,8 +3,11 @@ import './styles.css'
 import { FaCaretDown,FaCaretUp } from "react-icons/fa";
 import { FaUserCog } from "react-icons/fa";
 import { useNavigate } from 'react-router';
+import { useCookies } from 'react-cookie';
 
 function Header(){
+
+    const [cookie,setCookie, removeCookie] = useCookies(['token']);
 
     const navigate = useNavigate()
 
@@ -12,6 +15,10 @@ function Header(){
 
     const handleNavigate = (router: string) =>{
         navigate(router)
+    }
+
+    const handleLogout = () =>{
+        removeCookie('token')
     }
 
     return(
@@ -31,7 +38,7 @@ function Header(){
                     <div className={`absolute ${drop ? 'hidden':''} bg-white text-black shadow-lg mt-1 min-w-[120px] rounded-md ml-[-1.5rem]`}>
                         <a href="#" onClick={() => handleNavigate('/')} className="block px-4 py-2 hover:bg-gray-200">Vagas</a>
                         <a href="#" onClick={() => handleNavigate('vaga')} className="block px-4 py-2 hover:bg-gray-200">Cadastrar Vaga</a>
-                        <a href="#" className="block px-4 py-2 hover:bg-gray-200">Logout</a>
+                        <a href="#" onClick={handleLogout} className="block px-4 py-2 hover:bg-gray-200">Logout</a>
                         
                     </div>
                 </div>
