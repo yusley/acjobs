@@ -45,7 +45,7 @@ export function Login () {
 
         try{
             await login?.({email,password})
-            setSuccess('Sucesso ao efetuar login!')
+            setSuccess('Sucesso ao efetuar login')
             handleMensage()
             
         }catch(error:any){

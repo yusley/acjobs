@@ -22,9 +22,7 @@ function AuthProvider({children}:AuthProviderInterface){
     const login = async (data:LoginDataInterface) =>{
         try{
             const loginResponse = await loginRequest(data)
-
             setCookie('token',loginResponse.message)
-
         }catch(error){
             throw error;
         }
