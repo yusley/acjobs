@@ -4,6 +4,7 @@ import CreateJob from "../services/createJob";
 import { AxiosResponse } from "axios";
 import ListJobsService from "../services/listJobs";
 
+
 export interface JobInterface {
     id?: string;
     role: string;
@@ -17,6 +18,7 @@ export interface JobInterface {
 interface JobsContextInterface {
     jobs : JobInterface[];
     registerJob: (data: JobInterface) => Promise<void> | Promise<AxiosResponse<any, any>>;
+    listJobs: () => Promise<void>;
 }
 
 interface JobsProviderInterfce {
@@ -33,15 +35,17 @@ function JobsProvider({children}:JobsProviderInterfce){
     const [jobs,setJobs] = useState<JobInterface[]>([])
 
     useEffect(() => {
+        if(cookie.token){
+            listJobs()
+        }
         
-        listJobs()
         
-
-    },[])
+    },[cookie.token])
 
     const listJobs = async () => {
+
         const response = await ListJobsService(cookie.token)
-        console.log(response.message)
+        
         setJobs(response.message)
     }
 
@@ -55,7 +59,7 @@ function JobsProvider({children}:JobsProviderInterfce){
     }
 
     return(
-        <JobsContext.Provider value={{jobs,registerJob}}>
+        <JobsContext.Provider value={{jobs,registerJob,listJobs}}>
             {children}
         </JobsContext.Provider>
     )

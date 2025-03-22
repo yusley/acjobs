@@ -6,7 +6,7 @@ const loginRequest = async (data: LoginDataInterface) => {
         const response = await api.post('/api/v1/login', data);
         return response.data;
     } catch (error: any) {
-        console.error("Erro no login:", error.response?.data || error.message);
+    
         throw new Error(error.response?.data?.message || "Erro ao tentar fazer login");
     }
 };

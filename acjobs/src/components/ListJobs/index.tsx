@@ -6,8 +6,6 @@ function ListJobs () {
 
     const {jobs} = useJobs();
 
-    console.log(jobs)
-
     return(
         <div className="w-full flex flex-col justify-center items-center">
             <div className="w-full max-w-[1200px] py-[2rem] flex flex-col justify-center">
@@ -16,7 +14,8 @@ function ListJobs () {
             <div className="w-full max-w-[1200px] flex md:justify-center xl:justify-between gap-15 flex-wrap ">
                 {jobs[0] ? (
                     jobs.map((job) => (
-                        <CardJob 
+                        <CardJob
+                            key={job.id}
                             company={job.company}
                             link={job.link}
                             location={job.location}

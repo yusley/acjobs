@@ -38,7 +38,7 @@ export function Login () {
         if(email.length < 11 || password.length < 3){
             setError("Usuário ou senha inválidos")
             handleMensage()
-            console.log('erro')
+          
             return;
             
         }

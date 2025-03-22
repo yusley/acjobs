@@ -47,7 +47,7 @@ const reduce = (state:JobInterface, action: Action) => {
 
 function JobForm(){
 
-    const {registerJob} = useJobs();
+    const {registerJob,listJobs} = useJobs();
     const [state,dispatch] = useReducer(reduce,inititalVagaValue)
 
         const [error,setError] = useState("");
@@ -61,20 +61,18 @@ function JobForm(){
 
     const formatCurrency = (value: number): string => {
         return new Intl.NumberFormat("pt-BR", {
-          style: "currency",
-          currency: "BRL",
-          minimumFractionDigits: 2,
-        }).format(value);
-      };
-      
-      const parseCurrency = (value: string): number => {
-        
+            style: "currency",
+            currency: "BRL",
+            minimumFractionDigits: 2,
+        }).format(value / 100);
+    };
+    
+    const parseCurrency = (value: string): number => {
         let numericValue = value.replace(/\D/g, ""); 
-      
-       
-        return parseFloat(numericValue) / 100;
-      };
-      
+        return numericValue ? parseInt(numericValue, 10) : 0;
+    };
+    
+
 
     const handleMensage = () => {
         setShowAlert(true)
@@ -99,7 +97,7 @@ function JobForm(){
         setSuccess('')
         e.preventDefault()
         
-
+      
         
         if(checkEmptyValues(state)){
             setError('Você precisa preencher todos os campos!')
@@ -108,7 +106,7 @@ function JobForm(){
         }
          
         try{
-            console.log(state)
+            
             await registerJob(state)
             setSuccess('Sucesso ao cadastrar vaga')
             handleMensage()
@@ -118,6 +116,7 @@ function JobForm(){
         }
 
         dispatch({type:'ADD_JOB'})
+        listJobs()
     }
 
     return(
@@ -191,16 +190,16 @@ function JobForm(){
                                     </div>
 
                                     <div className='flex flex-col min-w-[300px]'>
-                                        <label htmlFor="">Salário:</label>
-                                        <input 
-                                            className={`w-full p-[1%] border-1 ${error && state.salary <= 0 ? "border-[#ff2f2f]" : "border-[#e0e0e0]"} mt-2 outline-0 rounded shadow`} 
-                                            type="text"
-                                            value={formatCurrency(state.salary)}
-                                            onChange={(e) => {
+                                    <label htmlFor="">Salário:</label>
+                                    <input 
+                                        className={`w-full p-[1%] border-1 ${error && state.salary <= 0 ? "border-[#ff2f2f]" : "border-[#e0e0e0]"} mt-2 outline-0 rounded shadow`} 
+                                        type="text"
+                                        value={formatCurrency(state.salary)}
+                                        onChange={(e) => {
                                             const parsedValue = parseCurrency(e.target.value);
-                                            handleValueInput("salary", parsedValue);
-                                            }}
-                                        />
+                                            handleValueInput("salary", parsedValue); 
+                                        }}
+                                    />
                                     </div>
 
                                 </div>
