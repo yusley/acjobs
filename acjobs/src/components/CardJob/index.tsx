@@ -1,7 +1,7 @@
 import './styles.css'
 import { IoLocationOutline } from 'react-icons/io5';
 import { PiCityDuotone } from "react-icons/pi";
-
+import { LiaMoneyBillWaveAltSolid } from "react-icons/lia";
 
 function CardJob ({...props}) {
     return(
@@ -10,8 +10,14 @@ function CardJob ({...props}) {
                 <h3 className="">Analista de Dados</h3>
             </div>
             <div className="modality">
-                <p className='w-25 flex text-[1rem] bg-green-500 text-amber-50 relative p-1 items-center justify-center rounded'>
+                <p className='w-25 flex text-[1rem] bg-[#1FA774] text-amber-50 relative p-1 items-center justify-center rounded'>
                     Presencial
+                </p>
+            </div>
+            <div className="location py-1 flex items-center gap-1">
+                <LiaMoneyBillWaveAltSolid/>
+                <p className='text-[1rem] font-semibold text-slate-600'>
+                    R$ 10.000,00
                 </p>
             </div>
             <div className="location py-1 flex items-center gap-1">
@@ -20,7 +26,8 @@ function CardJob ({...props}) {
                     Rio Branco - AC
                 </p>
             </div>
-            <div className="details w-full flex justify-between mt-10">
+            
+            <div className="details w-full flex justify-between mt-5">
                 <div className="interpraise py-1 flex items-end gap-1">
                     <PiCityDuotone />
                     <p className='text-[1rem] font-semibold text-slate-600'>
@@ -29,7 +36,7 @@ function CardJob ({...props}) {
                 </div>
                 <div className="detailsLink flex ">
                     <a href="#">
-                        <button className='bg-green-500 text-[#fff] text-[18px] p-3 cursor-pointer'>Detalhes</button>
+                        <button className='bg-[#1FA774] text-[#fff] text-[18px] p-3 cursor-pointer'>Detalhes</button>
                     </a>
                 </div>
             </div>
