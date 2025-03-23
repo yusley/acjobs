@@ -15,6 +15,8 @@ export interface JobInterface {
     remote: boolean;
     link: string;
     salary: number;
+    created_at?: string;
+    updated_at?: string;
 }
 
 interface JobsContextInterface {
@@ -66,9 +68,9 @@ function JobsProvider({children}:JobsProviderInterfce){
     }
 
     const listJobs = async () => {
-
-        const response = await ListJobsService(cookie.token)
         
+        const response = await ListJobsService(cookie.token)
+        console.log(response.message)
         setJobs(response.message)
     }
 

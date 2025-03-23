@@ -16,6 +16,8 @@ const inititalJobValue: JobInterface = {
     remote: true,
     link: '',
     salary: 0,
+    created_at:'',
+    updated_at: ''
 }
 
 type Action = 
@@ -128,6 +130,20 @@ function JobForm(){
           }
         }
     }
+
+    //função para formatardata
+    function formatDate(dateString:string | Date) {
+        const date = new Date(dateString);
+      
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0'); // Meses começam em 0
+        const year = date.getFullYear();
+        const hours = String(date.getHours()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+        const seconds = String(date.getSeconds()).padStart(2, '0');
+      
+        return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+      }
       
     // cria uma nova vaga
     const handleCreateJob = async (e: FormEvent) => {
@@ -222,18 +238,29 @@ function JobForm(){
 
 
 
-            <div className="w-full px-2 flex flex-col justify-center items-center box-border h-[84.7vh]">
+            <div className="w-full px-2 flex flex-col justify-center items-center box-border xl:h-[84.7vh] md:h-[84.7vh]">
 
             
 
                 <div className="w-full max-w-[1200px] py-[2rem] flex flex-col justify-center">
                     <h1 className='text-slate-400 text-3xl'>{!edit ? "Cadastar Vaga" : "Gerenciar Vaga"}</h1>
                 </div>
-                <div className="w-full flex flex-col justify-center items-center max-w-[1200px] bg-[#fff] rounded py-[5rem] shadow-2xl">
+                <div className="w-full flex flex-col justify-center items-center max-w-[1200px] bg-[#fff] rounded xl:py-[5rem] py-[1rem] shadow-2xl">
                     {edit &&
-                        <div className='w-full max-w-[1000px] px-[1%] py-[1%]  flex flex-row-reverse'>
-                            <FaTrashCan onClick={openModal} className='cursor-pointer' color='#ff2f2f' size={30} />
+                        <div className='w-full max-w-[1000px] flex justify-between'>
+                            <div className='flex px-[1%] py-[1%] gap-5 flex-wrap mb-5'>
+                                <p className='text-gray-500'>
+                                    Criação : {formatDate(state.created_at ? state.created_at : '')}
+                                </p>
+                                <p className='text-gray-500'>
+                                    Atualização : {formatDate(state.updated_at ? state.updated_at : '')}
+                                </p>
+                            </div>
+                            <div className='px-[1%] py-[1%] '>
+                                <FaTrashCan onClick={openModal} className='cursor-pointer' color='#ff2f2f' size={30} />
+                            </div>
                         </div>
+                        
                     }
                     
                     <div className="w-full max-w-[1000px] flex justify-between gap-10 p-[1%]">
