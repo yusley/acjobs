@@ -2,7 +2,7 @@ Tabela de conteúdos
 =================
 <!--ts-->
    * [Sobre o projeto](#-sobre-o-projeto)
-   * [Funcionalidades](#funcionalidades)
+   * [Funcionalidades](#%EF%B8%8F-funcionalidades)
    * [Como executar o projeto](#-como-executar-o-projeto)
      * [Pré-requisitos](#pré-requisitos)
      * [Rodando o projeto (docker)](#user-content--rodando-o-projeto-docker)
