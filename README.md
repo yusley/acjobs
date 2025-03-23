@@ -2,10 +2,10 @@ Tabela de conteúdos
 =================
 <!--ts-->
    * [Sobre o projeto](#-sobre-o-projeto)
-   * [Funcionalidades](#-funcionalidades)
+   * [Funcionalidades](#funcionalidades)
    * [Como executar o projeto](#-como-executar-o-projeto)
      * [Pré-requisitos](#pré-requisitos)
-     * [Rodando o Backend (servidor)](#user-content--rodando-o-projeto-docker)
+     * [Rodando o projeto (docker)](#user-content--rodando-o-projeto-docker)
    * [Tecnologias](#-tecnologias)
      * [WebSite](#user-content-website--react----typescript)
    * [Licença](#user-content--licença)
