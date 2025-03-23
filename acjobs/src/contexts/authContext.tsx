@@ -22,9 +22,9 @@ function AuthProvider({children}:AuthProviderInterface){
     const login = async (data:LoginDataInterface) =>{
         try{
             const loginResponse = await loginRequest(data)
-
-            setCookie('token',loginResponse.message)
-
+            const expirationDate = new Date();
+            expirationDate.setHours(expirationDate.getHours() + 24);
+            setCookie('token',loginResponse.message, {expires: expirationDate})
         }catch(error){
             throw error;
         }
