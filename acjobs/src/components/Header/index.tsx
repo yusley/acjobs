@@ -25,7 +25,7 @@ function Header(){
     return(
         <div className="header w-full flex justify-between px-[1rem]">
             <div className="flex justify-center items-center cursor-pointer">
-            <img className="w-[10rem]" src={logo} alt="Logo" />
+            <img onClick={() => handleNavigate('/')} className="w-[10rem]" src={logo} alt="Logo" />
             </div>
             <div className="logout flex justify-center items-center">
                

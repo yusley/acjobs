@@ -10,7 +10,7 @@ function ListJobs () {
     
 
     return(
-        <div className="w-full flex flex-col justify-center items-center">
+        <div className="w-full mb-[3rem] flex flex-col justify-center items-center">
             <div className="w-full max-w-[1200px] py-[2rem] flex flex-col justify-center">
                 <h4 className='text-slate-400'>Foram encontrados {jobs.length} oportunidade</h4>
             </div>

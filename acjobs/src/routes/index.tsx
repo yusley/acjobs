@@ -7,6 +7,7 @@ import { AnimatePresence } from "framer-motion";
 import {useCookies} from 'react-cookie'
 import { useJobs } from "../contexts/jobsContext";
 import Alert from "../components/Alert";
+import Footer from "../components/Footer";
 
 function Routers(){
 
@@ -37,6 +38,7 @@ function Routers(){
                     
                 </Routes>
             </AnimatePresence>
+            <Footer/>
         </>
     )
 }
