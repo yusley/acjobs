@@ -1,0 +1,12 @@
+version: "3.8"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: react_nginx_app
+    ports:
+      - "3000:80"  # Acessando a aplicação na porta 3000
+    volumes:
+      - ./public:/app/public  # Se você tiver arquivos estáticos na pasta public

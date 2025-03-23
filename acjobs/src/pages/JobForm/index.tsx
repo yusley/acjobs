@@ -222,16 +222,20 @@ function JobForm(){
 
 
 
-            <div className="w-full px-2 flex flex-col justify-center items-center">
+            <div className="w-full px-2 flex flex-col justify-center items-center box-border h-[84.7vh]">
+
             
 
                 <div className="w-full max-w-[1200px] py-[2rem] flex flex-col justify-center">
                     <h1 className='text-slate-400 text-3xl'>{!edit ? "Cadastar Vaga" : "Gerenciar Vaga"}</h1>
                 </div>
                 <div className="w-full flex flex-col justify-center items-center max-w-[1200px] bg-[#fff] rounded py-[5rem] shadow-2xl">
-                    <div className='w-full max-w-[1000px] px-[1%] py-[1%]  flex flex-row-reverse'>
-                        <FaTrashCan onClick={openModal} className='cursor-pointer' color='#ff2f2f' size={30} />
-                    </div>
+                    {edit &&
+                        <div className='w-full max-w-[1000px] px-[1%] py-[1%]  flex flex-row-reverse'>
+                            <FaTrashCan onClick={openModal} className='cursor-pointer' color='#ff2f2f' size={30} />
+                        </div>
+                    }
+                    
                     <div className="w-full max-w-[1000px] flex justify-between gap-10 p-[1%]">
                         <div className='form w-full flex flex-col'>
                             <form action="">

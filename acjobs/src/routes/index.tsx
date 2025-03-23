@@ -13,11 +13,11 @@ function Routers(){
 
     const [cookie] = useCookies();
     
-    const {messageAlert,showAlert,typeAlert,alert} = useJobs()
+    const {alert} = useJobs()
 
     return(
         <>  
-            {alert && <Alert type={typeAlert ? 'fail':'success'} message={messageAlert}/>}
+            {alert && <Alert />}
             <AnimatePresence>
                 {cookie.token && <Header/>}
                 

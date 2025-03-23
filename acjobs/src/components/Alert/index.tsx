@@ -4,7 +4,7 @@ import { IoAlertCircleOutline } from "react-icons/io5";
 import { useJobs } from "../../contexts/jobsContext";
 
 
-function Alert ({...props}) {
+function Alert () {
    
     const {messageAlert,typeAlert} = useJobs();
 
