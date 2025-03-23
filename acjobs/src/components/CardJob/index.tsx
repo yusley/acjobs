@@ -4,8 +4,11 @@ import { PiCityDuotone } from "react-icons/pi";
 import { LiaMoneyBillWaveAltSolid } from "react-icons/lia";
 import { JobInterface } from '../../contexts/jobsContext';
 
+type JobinterfaceOnActions = JobInterface & {
+    click : React.MouseEventHandler<HTMLButtonElement> 
+}
 
-function CardJob ({...props}: JobInterface) {
+function CardJob ({...props}: JobinterfaceOnActions) {
 
     const formatCurrency = (value: number) => {
         return new Intl.NumberFormat('pt-BR', {
@@ -46,7 +49,7 @@ function CardJob ({...props}: JobInterface) {
                 </div>
                 <div className="detailsLink flex ">
                     
-                    <button className='bg-[#1FA774] text-[#fff] text-[18px] p-3 cursor-pointer'>Detalhes {props.id}</button>
+                    <button onClick={() => props.click} className='bg-[#1FA774] text-[#fff] text-[18px] p-3 cursor-pointer'>Detalhes {props.id}</button>
                     
                 </div>
             </div>

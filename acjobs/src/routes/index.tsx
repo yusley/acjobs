@@ -18,6 +18,7 @@ function Routers(){
                     <>  
                         <Route path="/" element={<Home/>}/>
                         <Route path="/vaga" element={<JobForm/>}/>
+                        <Route path="/vaga/:id" element={<JobForm/>}/>
                         <Route path="*" element={<Navigate to="/" />} />
                     </> ):(
                     <>
