@@ -1,0 +1,10 @@
+/* titulo das vagas */
+h3{
+    
+    font-size: 2rem;
+    font-weight: 500;
+    color:var(--font-title-color);
+}
+
+
+  
