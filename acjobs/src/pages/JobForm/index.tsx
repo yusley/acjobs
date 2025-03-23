@@ -1,12 +1,15 @@
 import './styles.css'
 import {motion} from 'framer-motion'
-import { FormEvent, useReducer, useState } from 'react';
+import { FormEvent, useEffect, useReducer, useState } from 'react';
 import { JobInterface } from '../../contexts/jobsContext';
 import { useJobs } from '../../contexts/jobsContext';
-import Alert from '../../components/Alert';
-import { i } from 'framer-motion/client';
+import { useParams } from 'react-router';
+import { useLocation } from 'react-router';
+import { FaTrashCan } from "react-icons/fa6";
+import ModalComponent from '../../components/Modal';
+import { useNavigate } from 'react-router';
 
-const inititalVagaValue: JobInterface = {
+const inititalJobValue: JobInterface = {
     role: '',
     company: '',
     location: '',
@@ -23,6 +26,7 @@ type Action =
 | {type:"SET_LINK",payload: string}
 | {type:"SET_SALARY",payload: number}
 | {type:"ADD_JOB"}
+| {type:"EDIT_JOB",payload:JobInterface}
 
 const reduce = (state:JobInterface, action: Action) => {
     switch (action.type){
@@ -39,7 +43,9 @@ const reduce = (state:JobInterface, action: Action) => {
         case 'SET_SALARY':
             return {...state, salary: Number(action.payload)}
         case 'ADD_JOB':
-            return inititalVagaValue
+            return inititalJobValue
+        case 'EDIT_JOB':
+            return action.payload
         default:
             return state
     }
@@ -47,18 +53,54 @@ const reduce = (state:JobInterface, action: Action) => {
 
 function JobForm(){
 
-    const {registerJob,listJobs} = useJobs();
-    const [state,dispatch] = useReducer(reduce,inititalVagaValue)
+    const {registerJob,listJobs,updateJob,deleteJob,showAlert} = useJobs();
+    const [state,dispatch] = useReducer(reduce,inititalJobValue)
 
-        const [error,setError] = useState("");
-        const [success,setSuccess] = useState("");
-        const [showAlert, setShowAlert] = useState(false);
+    const navigate = useNavigate();
+
+    // estados reponsáveis pelas mensagens de erro
+    const [error,setError] = useState(false);
+
+    //parametros para edicao dos dados
+    const [edit,setEdit] = useState(false)
+    const {id} = useParams()
+    const location = useLocation()
+    const [modalIsOpen, setIsOpen] = useState(false);
+
+    useEffect(() => {
+        // valida os parametros da url
+        verifyEditionParams();
+    },[])
+    
+    
+    // abre o modal
+    function openModal() {
+        setIsOpen(true);
+    }
+    
+    // fecha o modal
+    function closeModal() {
+        setIsOpen(false);
+    }
+
+    
+    // verifica os parâmetros para edição
+    const verifyEditionParams = () => {
         
+        if(id){
+            const statesData = location.state?.job
+            dispatch({type:'EDIT_JOB',payload:statesData})
+            setEdit(true)
+            console.log(edit)
+        }
+    }
 
+    // atualiza os valoes dos inputs
     const handleValueInput = (inputName:string,value:string | number | boolean) =>{
         dispatch({type: `SET_${inputName.toLocaleUpperCase()}` , payload: value} as Action)
     }
 
+    //formata o valor monetario do salario
     const formatCurrency = (value: number): string => {
         return new Intl.NumberFormat("pt-BR", {
             style: "currency",
@@ -67,20 +109,16 @@ function JobForm(){
         }).format(value / 100);
     };
     
+    // mascara para aplicar o valor no input
     const parseCurrency = (value: string): number => {
         let numericValue = value.replace(/\D/g, ""); 
         return numericValue ? parseInt(numericValue, 10) : 0;
     };
     
 
+    // mostra o alert e fecha depois de 4 segundos
 
-    const handleMensage = () => {
-        setShowAlert(true)
-        setTimeout(() => {
-            setShowAlert(false)
-        },4000)
-    }
-
+    // valida se os campos do form estão vazios
     function checkEmptyValues(state: JobInterface) {
         for (let key in state) {
           if (state.hasOwnProperty(key)) {
@@ -91,33 +129,78 @@ function JobForm(){
         }
     }
       
-
-    const handleVaga = async (e: FormEvent) => {
-        setError('')
-        setSuccess('')
+    // cria uma nova vaga
+    const handleCreateJob = async (e: FormEvent) => {
+        setError(false)
         e.preventDefault()
         
-      
-        
+          
         if(checkEmptyValues(state)){
-            setError('Você precisa preencher todos os campos!')
-            handleMensage()
+            setError(true)
+            showAlert('Você precisa preencher todos os campos!','fail')
             return;
         }
          
         try{
-            
             await registerJob(state)
-            setSuccess('Sucesso ao cadastrar vaga')
-            handleMensage()
+            
+            showAlert('Sucesso ao cadastrar vaga','success')
         }catch(error:any){
-            setError(error.message)
-            handleMensage()
+            setError(true)
+            showAlert(error.message,'fail')
+            
         }
 
         dispatch({type:'ADD_JOB'})
         listJobs()
     }
+
+    //edita vaga
+    const handleEditJob = async (e:FormEvent) =>{
+        setError(false)
+        e.preventDefault()
+      
+        
+          
+        if(checkEmptyValues(state)){
+            setError(true)
+            showAlert('Você precisa preencher todos os campos!','fail')
+            return;
+        }
+         
+        try{
+            await updateJob(state,state.id as string)
+            
+            showAlert('Sucesso ao editar vaga','success')
+        }catch(error:any){
+            setError(true)
+            showAlert(error.message,'fail')
+        }
+
+        listJobs()
+    }
+
+    // remove uma vaga
+    const handleDeleteJob = async () => {
+        setError(false)
+        
+        try{
+            await deleteJob(state.id as string)
+            
+            showAlert('Sucesso ao deletar vaga','success')
+        }catch(error:any){
+            setError(true)
+            showAlert(error.message,'fail')
+        }
+
+
+        closeModal()
+        listJobs()
+        navigate('/')
+
+
+    }
+
 
     return(
         <motion.div 
@@ -125,14 +208,30 @@ function JobForm(){
             animate={{ opacity: 1 }} 
             exit={{ opacity: 0 }} 
             transition={{ duration: 1 }}
-        >
+        >   
+
+            
+            <ModalComponent 
+                isOpen={modalIsOpen} 
+                close={closeModal} 
+                open={openModal}
+                action={handleDeleteJob}
+                title={"Excluir vaga"}
+                message={"Você realmente deseja excluir esta vaga? Após esta ação, não será possível desfezê-la."}
+                />
+
+
+
             <div className="w-full px-2 flex flex-col justify-center items-center">
-            {showAlert && <Alert type={error ? 'fail':'success'} message={success ? success : error}/>}
+            
 
                 <div className="w-full max-w-[1200px] py-[2rem] flex flex-col justify-center">
-                    <h1 className='text-slate-400 text-3xl'>Cadastar Vaga</h1>
+                    <h1 className='text-slate-400 text-3xl'>{!edit ? "Cadastar Vaga" : "Gerenciar Vaga"}</h1>
                 </div>
-                <div className="w-full flex justify-center items-center max-w-[1200px] bg-[#fff] rounded py-[5rem] shadow-2xl">
+                <div className="w-full flex flex-col justify-center items-center max-w-[1200px] bg-[#fff] rounded py-[5rem] shadow-2xl">
+                    <div className='w-full max-w-[1000px] px-[1%] py-[1%]  flex flex-row-reverse'>
+                        <FaTrashCan onClick={openModal} className='cursor-pointer' color='#ff2f2f' size={30} />
+                    </div>
                     <div className="w-full max-w-[1000px] flex justify-between gap-10 p-[1%]">
                         <div className='form w-full flex flex-col'>
                             <form action="">
@@ -207,9 +306,18 @@ function JobForm(){
 
                                 <div className='w-full flex flex-wrap gap-5 my-[3rem] flex-row-reverse'>
                                     
-                                    <div className="detailsLink flex w-full bg-amber-50">
-                                        <button onClick={handleVaga} className='w-full bg-[#1FA774] text-[#fff] text-[18px] p-3 cursor-pointer rounded'>Salvar</button>
-                                    </div>
+                                    {!edit ?
+                                        
+                                        <div className="detailsLink flex w-full bg-amber-50">
+                                            <button onClick={handleCreateJob} className='w-full bg-[#1FA774] text-[#fff] text-[18px] p-3 cursor-pointer rounded'>Salvar</button>
+                                        </div>
+                                        
+                                        :
+                                        <div className="detailsLink flex w-full bg-amber-50">
+                                            <button onClick={handleEditJob} className='w-full bg-[#1FA774] text-[#fff] text-[18px] p-3 cursor-pointer rounded'>Salvar</button>
+                                        </div>
+                                    }
+                                    
 
                                 </div>
                             </form>

@@ -1,56 +1,41 @@
 import { FormEvent, useState } from "react"
 import { useAuth } from "../../contexts/authContext";
 import * as EmailValidator from 'email-validator'
-import Alert from "../../components/Alert";
-
+import { useJobs } from "../../contexts/jobsContext";
 
 export function Login () {
 
     const {login} = useAuth();
-    const [showAlert, setShowAlert] = useState(false);
     const [email,setEmail] = useState("");
     const [password,setPassword] = useState("");
-    const [error,setError] = useState("");
-    const [success,setSuccess] = useState("");
     
-
-    const handleMensage = () => {
-        setShowAlert(true)
-        setTimeout(() => {
-            setShowAlert(false)
-        },4000)
-
-        
-    }
-
+    const {showAlert} = useJobs();
+    
     const handleLogin  = async (e:FormEvent) => {
         
         e.preventDefault()
-        setError('')
-        setSuccess('')
+        
 
         if (!EmailValidator.validate(email)) {
-            setError("Email inválido")
-            handleMensage()
+           
+            showAlert('Email inválido','fail')
             return;
         }
 
         if(email.length < 11 || password.length < 3){
-            setError("Usuário ou senha inválidos")
-            handleMensage()
-          
+            showAlert('Usuário ou senha inválidos','fail')
+
             return;
             
         }
 
         try{
             await login?.({email,password})
-            setSuccess('Sucesso ao efetuar login')
-            handleMensage()
             
+            showAlert('Sucesso ao efetuar login','success')
         }catch(error:any){
-            setError(error.message || "Erro ao tentar fazer login");
-            handleMensage()
+            
+            showAlert(error.message,'fail')
         }
         
         
@@ -59,7 +44,7 @@ export function Login () {
     return(
         <div className="h-screen flex justify-center items-center">
             
-            {showAlert && <Alert type={error ? 'fail':'success'} message={success ? success : error}/>}
+            
 
             <div className="w-full h-full sm:h-full lg:h-[90%] max-h-[800px] flex bg-white max-w-[100rem]">
                 <div className="w-[50%] lg:flex md:flex hidden justify-center items-center">

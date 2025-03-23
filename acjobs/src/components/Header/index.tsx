@@ -4,6 +4,7 @@ import { FaCaretDown,FaCaretUp } from "react-icons/fa";
 import { FaUserCog } from "react-icons/fa";
 import { useNavigate } from 'react-router';
 import { useCookies } from 'react-cookie';
+import logo from '../../assets/logo.png'
 
 function Header(){
 
@@ -24,7 +25,7 @@ function Header(){
     return(
         <div className="header w-full flex justify-between px-[1rem]">
             <div className="flex justify-center items-center cursor-pointer">
-                <img className='w-[10rem]' src="./public/logo.png" alt="" />
+            <img className="w-[10rem]" src={logo} alt="Logo" />
             </div>
             <div className="logout flex justify-center items-center">
                
@@ -37,7 +38,7 @@ function Header(){
 
                     <div className={`absolute ${drop ? 'hidden':''} bg-white text-black shadow-lg mt-1 min-w-[120px] rounded-md ml-[-1.5rem]`}>
                         <a href="#" onClick={() => handleNavigate('/')} className="block px-4 py-2 hover:bg-gray-200">Vagas</a>
-                        <a href="#" onClick={() => handleNavigate('vaga')} className="block px-4 py-2 hover:bg-gray-200">Cadastrar Vaga</a>
+                        <a href="/vaga/" onClick={() => handleNavigate('/vaga/')} className="block px-4 py-2 hover:bg-gray-200">Cadastrar Vaga</a>
                         <a href="#" onClick={handleLogout} className="block px-4 py-2 hover:bg-gray-200">Logout</a>
                         
                     </div>

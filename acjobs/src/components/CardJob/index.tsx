@@ -10,13 +10,15 @@ type JobinterfaceOnActions = JobInterface & {
 
 function CardJob ({...props}: JobinterfaceOnActions) {
 
-    const formatCurrency = (value: number) => {
-        return new Intl.NumberFormat('pt-BR', {
-          style: 'currency',
-          currency: 'BRL',
-        }).format(value);
-      };
 
+    const formatCurrency = (value: number) => {
+        const formattedValue = value / 100;
+        return new Intl.NumberFormat('pt-BR', {
+            style: 'currency',
+            currency: 'BRL',
+        }).format(formattedValue);
+    };
+    
     return(
         <div className="w-full xl:w-[45%] md:w-[45%] flex flex-col shadow-xl font-sans bg-[#fff] p-[1rem] text-3xl rounded-2xl gap-3">
             <div className="title">
@@ -49,7 +51,7 @@ function CardJob ({...props}: JobinterfaceOnActions) {
                 </div>
                 <div className="detailsLink flex ">
                     
-                    <button onClick={() => props.click} className='bg-[#1FA774] text-[#fff] text-[18px] p-3 cursor-pointer'>Detalhes {props.id}</button>
+                    <button onClick={props.click} className='bg-[#1FA774] text-[#fff] text-[18px] p-3 cursor-pointer'>Detalhes</button>
                     
                 </div>
             </div>

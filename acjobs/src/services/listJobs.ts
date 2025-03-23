@@ -8,7 +8,7 @@ const ListJobsService = async (token:string) => {
         return response.data
         
     }catch(error:any){
-        throw new Error(error.message || "Erro ao cadastrar vaga")
+        throw new Error(error.message || "Erro ao listar vagas")
     }
 }
 

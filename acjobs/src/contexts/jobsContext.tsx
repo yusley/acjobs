@@ -3,6 +3,8 @@ import { useCookies } from "react-cookie";
 import CreateJob from "../services/createJob";
 import { AxiosResponse } from "axios";
 import ListJobsService from "../services/listJobs";
+import UpdateJob from "../services/updateJob";
+import DeleteJob from "../services/deleteJob";
 
 
 export interface JobInterface {
@@ -19,6 +21,12 @@ interface JobsContextInterface {
     jobs : JobInterface[];
     registerJob: (data: JobInterface) => Promise<void> | Promise<AxiosResponse<any, any>>;
     listJobs: () => Promise<void>;
+    updateJob: (data: JobInterface,id:string) => Promise<void> | Promise<AxiosResponse<any, any>>;
+    deleteJob: (id:string) => Promise<void> | Promise<AxiosResponse<any, any>>;
+    typeAlert: string;
+    messageAlert: string;
+    alert: boolean;
+    showAlert: (message:string,type:string) => void;
 }
 
 interface JobsProviderInterfce {
@@ -34,6 +42,12 @@ function JobsProvider({children}:JobsProviderInterfce){
 
     const [jobs,setJobs] = useState<JobInterface[]>([])
 
+    const [messageAlert,setMessageAlet] = useState('');
+
+    const [typeAlert,setTypeAlert] = useState('');
+
+    const [alert,setAlert] = useState(false);
+
     useEffect(() => {
         if(cookie.token){
             listJobs()
@@ -41,6 +55,15 @@ function JobsProvider({children}:JobsProviderInterfce){
         
         
     },[cookie.token])
+    
+    const showAlert = (message:string,type:string) => {
+        setMessageAlet(message)
+        setTypeAlert(type)
+        setAlert(true)
+        setTimeout(() => {
+            setAlert(false)
+        },4000)
+    }
 
     const listJobs = async () => {
 
@@ -58,8 +81,26 @@ function JobsProvider({children}:JobsProviderInterfce){
         }
     }
 
+    const updateJob = async (data: JobInterface, id: string) => {
+        try{
+            const response = await UpdateJob(data,cookie.token,id)
+            return response
+        }catch(error){
+            throw error
+        }
+    }
+
+    const deleteJob = async (id:string) => {
+        try{
+            const response = await DeleteJob(cookie.token,id)
+            return response
+        }catch(error){
+            throw error
+        }
+    }
+
     return(
-        <JobsContext.Provider value={{jobs,registerJob,listJobs}}>
+        <JobsContext.Provider value={{jobs,registerJob,listJobs,updateJob,deleteJob,messageAlert,showAlert,typeAlert,alert}}>
             {children}
         </JobsContext.Provider>
     )

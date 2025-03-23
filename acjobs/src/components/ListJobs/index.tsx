@@ -1,15 +1,13 @@
 import CardJob from '../CardJob';
 import './styles.css'
 import { useJobs } from '../../contexts/jobsContext';
-import { Navigate } from 'react-router';
+import { useNavigate } from 'react-router';
 
 function ListJobs () {
 
     const {jobs} = useJobs();
+    const navigate = useNavigate()
     
-    const navigation = (path:string) => {
-        
-    }
 
     return(
         <div className="w-full flex flex-col justify-center items-center">
@@ -28,7 +26,7 @@ function ListJobs () {
                             role={job.role}
                             salary={job.salary}
                             id={job.id}
-                            click={() => navigation(`/vaga/${job.id}`)}
+                            click={() => navigate(`/vaga/${job.id}`, {state:{job}})}
                         />
                     ))
                 ):(<></>)}

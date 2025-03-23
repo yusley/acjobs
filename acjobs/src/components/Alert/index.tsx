@@ -1,20 +1,24 @@
 import { Alert as AlertTailwind } from "@material-tailwind/react";
 import { FaRegCheckCircle } from "react-icons/fa";
 import { IoAlertCircleOutline } from "react-icons/io5";
+import { useJobs } from "../../contexts/jobsContext";
+
+
 function Alert ({...props}) {
    
+    const {messageAlert,typeAlert} = useJobs();
 
     return(
         <AlertTailwind
-            icon={props.type == 'success' ? <FaRegCheckCircle/> : <IoAlertCircleOutline/>}
-            className={`xl:w-[30rem] md:w-[30rem] sm:w-full top-1 right-0 h-[3rem] items-center rounded-none border-l-4
+            icon={typeAlert == 'success' ? <FaRegCheckCircle/> : <IoAlertCircleOutline/>}
+            className={`xl:w-[30rem] md:w-[30rem] fixed sm:w-full top-1 right-0 h-[3rem] items-center rounded-none border-l-4
                 
-                ${props.type == 'success' && "border-[#2ec946] bg-[#45c958] text-[#d3ffda] "}
-                ${props.type == 'fail' && "border-[#f5867e] bg-[#b44b43] text-[#fde5e5]"}
+                ${typeAlert == 'success' && "border-[#2ec946] bg-[#45c958] text-[#d3ffda] "}
+                ${typeAlert == 'fail' && "border-[#f5867e] bg-[#b44b43] text-[#fde5e5]"}
                 
-                font-medium absolute`}
+                font-medium`}
         >
-            {props.message}
+            {messageAlert}
         </AlertTailwind>
     )
 
