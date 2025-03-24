@@ -20,6 +20,7 @@ const inititalJobValue: JobInterface = {
     updated_at: ''
 }
 
+
 type Action = 
 | {type:"SET_ROLE",payload: string}
 | {type:"SET_COMPANY",payload: string}
@@ -124,6 +125,10 @@ function JobForm(){
     function checkEmptyValues(state: JobInterface) {
         for (let key in state) {
           if (state.hasOwnProperty(key)) {
+            if (key === 'created_at' || key === 'updated_at'){
+                continue;
+            }
+
             if (state[key as keyof JobInterface] === '' || state[key as keyof JobInterface] === 0) {
               return true
             }
@@ -238,7 +243,7 @@ function JobForm(){
 
 
 
-            <div className="w-full px-2 flex flex-col justify-center items-center box-border xl:h-[84.7vh] md:h-[84.7vh]">
+            <div className="w-full px-2 flex flex-col justify-center items-center box-border">
 
             
 
